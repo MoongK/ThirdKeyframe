@@ -4,36 +4,26 @@ using UnityEngine;
 
 public class HeadMove : MonoBehaviour {
 
-
-    float rotationyy, rotationxx;
+    float rotationyy;
     float turnSpeed;
     
-
 	void Start () {
         rotationyy = 0f;
-        rotationxx = 0f;
-        turnSpeed = 20f;
+        turnSpeed = 100f;
 	}
 	
 	void Update () {
-        float xx = Input.GetAxisRaw("Mouse X");
         float yy = Input.GetAxisRaw("Mouse Y");
 
-        rotationyy += yy;
-        rotationxx += xx * Time.deltaTime;
-        float finalrotateyy = Mathf.Clamp(rotationyy, -30f, 45f);
-        float finalrotatexx = Mathf.Clamp(rotationxx, -20f, 20f);
+        rotationyy += yy * turnSpeed * Time.deltaTime;
 
-        //if (xx == 0f)
-        //    finalrotatexx = 0f;
+        if (rotationyy > 45f)
+            rotationyy = 45f;
+        else if (rotationyy < -45f)
+            rotationyy = -45f;
 
-        //transform.localRotation = Quaternion.Euler(-finalrotateyy, finalrotatexx, 0f);
-        transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(-finalrotateyy, finalrotatexx, 0f), turnSpeed * Time.deltaTime);
+        float finalrotateyy = Mathf.Clamp(rotationyy, -45f, 45f);
 
-        if (Input.GetKey(KeyCode.LeftControl))
-        {
-            print("Crouch!");
-        }
-
+        transform.localRotation = Quaternion.Euler(-finalrotateyy, 0f, 0f);
     }
 }
